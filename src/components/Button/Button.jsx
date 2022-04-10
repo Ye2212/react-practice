@@ -1,3 +1,5 @@
+import propTypes from 'prop-types'; 
+
 export const Button = ({ toggleVisibility, isVisible }) => {
   return (
     <button type="button" onClick={toggleVisibility}>
@@ -5,3 +7,8 @@ export const Button = ({ toggleVisibility, isVisible }) => {
     </button>
   );
 };
+
+Button.propTypes = {
+    toggleVisibility: propTypes.func.isRequired,
+    isVisible: propTypes.bool.isRequired,
+}

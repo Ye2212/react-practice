@@ -1,4 +1,5 @@
-// import propTypes from 'prop-types';
+import propTypes from 'prop-types';
+
 export const FilmListItem = ({
   img,
   title,
@@ -18,3 +19,16 @@ export const FilmListItem = ({
     </>
   );
 };
+
+FilmListItem.propTypes = {
+    films: propTypes.arrayOf(
+        propTypes.shape({
+            id: propTypes.number.isRequired,
+            title: propTypes.string.isRequired,
+            img: propTypes.string.isRequired,
+            watched: propTypes.bool.isRequired,
+        }).isRequired
+    ).isRequired,
+    onDeleteFilm: propTypes.func.isRequired,
+    onWatchedFilm: propTypes.func.isRequired,
+}

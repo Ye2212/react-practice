@@ -1,4 +1,4 @@
-// import propTypes from 'prop-types';
+import propTypes from 'prop-types';
 import { FilmListItem } from 'components/FilmListItem/FilmListItem';
 
 export const FilmList = ({ films, onDeleteFilm, onWatchedFilm }) => {
@@ -19,3 +19,12 @@ export const FilmList = ({ films, onDeleteFilm, onWatchedFilm }) => {
     </ul>
   );
 };
+
+FilmListItem.propTypes = {
+    id: propTypes.number.isRequired,
+    title: propTypes.string.isRequired,
+    img: propTypes.string.isRequired,
+    watched: propTypes.bool.isRequired,
+    onDeleteFilm: propTypes.func.isRequired,
+    onWatchedFilm: propTypes.func.isRequired,
+}
