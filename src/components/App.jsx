@@ -3,12 +3,23 @@ import { Component } from 'react';
 import { mapper } from 'utils/mapper';
 import { FilmList } from './FilmList/FilmList';
 import { Button } from './Button/Button';
-console.log(data);
+// console.log(data);
 
 class App extends Component {
   state = {
     films: mapper(data),
     isVisible: false,
+  };
+
+
+  toggleVisibility = () => {
+    this.setState(prevState => ({ isVisible: !prevState.isVisible }));
+  };
+
+  deleteFilm = delId => {
+    this.setState(prevState => ({
+      films: prevState.films.filter(({ id }) => id !== delId),
+    }));
   };
 
   toggleWatchedFilm = currentId => {
@@ -19,15 +30,6 @@ class App extends Component {
         }
         return film;
       }),
-    }));
-  };
-
-  toggleVisibility = () => {
-    this.setState(prevState => ({ isVisible: !prevState.isVisible }));
-  };
-  deleteFilm = delId => {
-    this.setState(prevState => ({
-      films: prevState.films.filter(({ id }) => id !== delId),
     }));
   };
 

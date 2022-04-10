@@ -1,5 +1,12 @@
 // import propTypes from 'prop-types';
-export const FilmListItem = ({ img, title, id, onDeleteFilm, watched, toggleWatchedFilm }) => {
+export const FilmListItem = ({
+  img,
+  title,
+  id,
+  onDeleteFilm,
+  watched,
+  onWatchedFilm,
+}) => {
   return (
     <>
       <img src={`https://image.tmdb.org/t/p/w500${img}`} alt="film" />
@@ -7,7 +14,7 @@ export const FilmListItem = ({ img, title, id, onDeleteFilm, watched, toggleWatc
       <button type="button" onClick={() => onDeleteFilm(id)}>
         Delete
       </button>
-      <span onClick={toggleWatchedFilm}>watched: {watched + ''}</span>
+      <span onClick={() => onWatchedFilm(id)}>watched: {watched + ''}</span>
     </>
   );
 };
