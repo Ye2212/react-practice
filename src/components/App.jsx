@@ -1,93 +1,121 @@
 // import { Component } from 'react';
-import { useState } from 'react';
-import data from 'data.json';
+import { useState, useEffect } from 'react';
 import { mapper } from 'utils/mapper';
 import { FilmList } from './FilmList/FilmList';
+import { fetchFilms } from '../services/api';
 import { Button } from './Button/Button';
-// console.log(data);
+import { Modal } from './Modal/Modal';
 
-const App = () => {
-  const [films, setFilms] = useState(mapper(data));
-  const [isVisible, setIsVisible] = useState(false);
-  // const [watched, setWatched] = useState(false);
+export const App = () => {
+  const [films, setFilms] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [image, setImage] = useState('');
 
-  // state = {
-  //   films: mapper(data),
-  //   isVisible: false,
-  // };
-
-  const toggleVisibility = () => {
-    setIsVisible(!isVisible);
+  useEffect(() => {
+    setIsLoading(true);
+    fetchFilms(page).then((films) => {
+      const mapperFilms = mapper(films.data.results);
+      setFilms((prevFilms) => [...prevFilms, ...mapperFilms])
+    }).catch((error) => console.log(error))
+      .finally(setIsLoading(false))
   }
-  // toggleVisibility = () => {
-  //   this.setState(prevState => ({ isVisible: !prevState.isVisible }));
-  // };
+    , [page])
 
-
-  const deleteFilm = delId => {
-    setFilms(prevFilms => {
-      prevFilms.filter(({ id }) => id !== delId)
-    })
+  const loadMore = () => {
+    setPage((prevPage) => prevPage + 1)
+  };
+  const toggleWatchedFilm = id => {
+    setFilms((prevFilms) =>
+      prevFilms.map((film) => {
+        if (film.id === id) {
+          return {
+            ...film,
+            watched: !film.watched,
+          }
+        }; return film;
+      })
+    )
   }
-  // deleteFilm = delId => {
-  //   this.setState(prevState => ({
-  //     films: prevState.films.filter(({ id }) => id !== delId),
-  //   }));
-  // };
-
-
-  const toggleWatchedFilm = currentId => {
-
+  const openModal = (image) => {
+    setImage(image);
   }
-
-  // toggleWatchedFilm = currentId => {
-  //   this.setState(prevState => ({
-  //     films: prevState.films.map(film => {
-  //       if (currentId === film.id) {
-  //         return { ...film, watched: !film.watched };
-  //       }
-  //       return film;
-  //     }),
-  //   }));
-  // };
-
+  const closeModal = () => {
+    setImage('');
+  }
 
   return (
     <>
-      <h1>Filmoteka</h1>
-      <Button
-        toggleVisibility={toggleVisibility}
-        isVisible={isVisible}
-      />
-      {isVisible && (
-        <FilmList
-          films={films}
-          onDeleteFilm={deleteFilm}
-          onWatchedFilm={toggleWatchedFilm}
-        />
-      )}
+      {isLoading && < h1 >Loading...Filmoteka</h1>}
+
+      <FilmList
+        films={films}
+        openModal={openModal}
+        onWatchedFilm={toggleWatchedFilm}
+      />{films && < Button onClick={loadMore} />}
+      {image && < Modal image={image} closeModal={closeModal} />}
     </>
   )
-
-  // render() {
-  //   const { isVisible, films } = this.state;
-  // return (
-  //   <>
-  //     <h1>Filmoteka</h1>
-  //     <Button
-  //       toggleVisibility={this.toggleVisibility}
-  //       isVisible={isVisible}
-  //     />
-  //     {isVisible && (
-  //       <FilmList
-  //         films={films}
-  //         onDeleteFilm={this.deleteFilm}
-  //         onWatchedFilm={this.toggleWatchedFilm}
-  //       />
-  //     )}
-  //   </>
-  // );
-  // }
 }
+
+
+// class App extends Component {
+//   state = {
+//     films: [],
+//     isLoading: false,
+//     page: 1,
+//   };
+
+//   getFetchFilms = page => {
+//     this.setState({ isLoading: true });
+//     fetchFilms(page).then(({ data }) => this.setState(prevState => ({
+//       films: [...prevState.films, ...mapper(data.results)],
+//     }))
+//     )
+//       .catch(error => console.log(error))
+//       .finally(this.setState({ isLoading: false }))
+//   }
+
+//   loadMore = () => {
+//     this.setState(prevState => ({ page: prevState.page + 1 }))
+//   }
+
+//   componentDidUpdate(prevProps, prevState) {
+//     if (prevState.page !== this.state.page) {
+//       console.log(this.state.page)
+
+//       this.getFetchFilms(this.state.page);
+//     }
+//   }
+
+//   componentDidMount() {
+//     this.getFetchFilms(this.state.page);
+//   }
+
+//   toggleWatchedFilm = currentId => {
+//     this.setState(prevState => ({
+//       films: prevState.films.map(film => {
+//         if (currentId === film.id) {
+//           return { ...film, watched: !film.watched };
+//         }
+//         return film;
+//       }),
+//     }));
+//   };
+
+//   render() {
+//     const { films } = this.state;
+//     return (
+//       <>
+//         <h1>Filmoteka</h1>
+
+//         <FilmList
+//           films={films}
+//           onWatchedFilm={this.toggleWatchedFilm}
+//         />{this.state.films && < Button onClick={this.loadMore} />}
+//       </>
+//     );
+//   }
+// }
 
 export default App;
