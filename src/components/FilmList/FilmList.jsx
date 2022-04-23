@@ -21,10 +21,10 @@ export const FilmList = ({ films, onDeleteFilm, onWatchedFilm }) => {
 };
 
 FilmListItem.propTypes = {
-    id: propTypes.number.isRequired,
-    title: propTypes.string.isRequired,
-    img: propTypes.string.isRequired,
-    watched: propTypes.bool.isRequired,
-    onDeleteFilm: propTypes.func.isRequired,
-    onWatchedFilm: propTypes.func.isRequired,
+  id: propTypes.number.isRequired,
+  title: propTypes.string.isRequired,
+  img: propTypes.string.isRequired,
+  watched: propTypes.bool.isRequired,
+  onDeleteFilm: propTypes.func.isRequired,
+  // onWatchedFilm: propTypes.func.isRequired,
 }

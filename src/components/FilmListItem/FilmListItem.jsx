@@ -21,14 +21,14 @@ export const FilmListItem = ({
 };
 
 FilmListItem.propTypes = {
-    films: propTypes.arrayOf(
-        propTypes.shape({
-            id: propTypes.number.isRequired,
-            title: propTypes.string.isRequired,
-            img: propTypes.string.isRequired,
-            watched: propTypes.bool.isRequired,
-        }).isRequired
-    ).isRequired,
-    onDeleteFilm: propTypes.func.isRequired,
-    onWatchedFilm: propTypes.func.isRequired,
+  films: propTypes.arrayOf(
+    propTypes.shape({
+      id: propTypes.number.isRequired,
+      title: propTypes.string.isRequired,
+      img: propTypes.string.isRequired,
+      watched: propTypes.bool.isRequired,
+    }).isRequired
+  ).isRequired,
+  onDeleteFilm: propTypes.func.isRequired,
+  onWatchedFilm: propTypes.func.isRequired,
 }
